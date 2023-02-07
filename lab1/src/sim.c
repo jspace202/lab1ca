@@ -122,6 +122,21 @@ int r_process(char* i_) {
     SRA(Rd, Rs1, Rs2, Funct3);
     return 0;
   }
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an SLT instruction. \n");
+    SLT(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an SLTU instruction. \n");
+    SLTU(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an SLL instruction. \n");
+    SLL(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
   /* Add other data instructions here */ 
 
   return 1;	
