@@ -87,7 +87,7 @@ int r_process(char* i_) {
   printf("\n");
 
   /* Example - use and replicate */
-  if(!strcmp(d_opcode,"0110011")) {
+  if(!strcmp(d_opcode,"0111011")) {
     printf("--- This is an ADD instruction. \n");
     ADD(Rd, Rs1, Rs2, Funct3);
     return 0;
