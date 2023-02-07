@@ -87,12 +87,41 @@ int r_process(char* i_) {
   printf("\n");
 
   /* Example - use and replicate */
-  if(!strcmp(d_opcode,"0111011")) {
+  if(!strcmp(d_opcode,"0110011")) {
     printf("--- This is an ADD instruction. \n");
     ADD(Rd, Rs1, Rs2, Funct3);
     return 0;
   }
-
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an SRL instruction. \n");
+    SRL(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an SUB instruction. \n");
+    SUB(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an OR instruction. \n");
+    OR(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an XOR instruction. \n");
+    XOR(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an AND instruction. \n");
+    AND(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
+  if(!strcmp(d_opcode,"0110011")) {
+    printf("--- This is an SRA instruction. \n");
+    SRA(Rd, Rs1, Rs2, Funct3);
+    return 0;
+  }
   /* Add other data instructions here */ 
 
   return 1;	
