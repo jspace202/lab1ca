@@ -94,7 +94,7 @@ int r_process(char* i_) {
   }
   if(!strcmp(d_opcode,"0110011")) {
     printf("--- This is an SRL instruction. \n");
-    SRL(Rd, Rs1, Rs2, Funct3);
+    SRL(Rd);
     return 0;
   }
   if(!strcmp(d_opcode,"0110011")) {
