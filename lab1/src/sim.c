@@ -183,7 +183,11 @@ int i_process(char* i_) {
     ADDI(Rd, Rs1, Imm, Funct3);
     return 0;
   }	  
-
+  if(!strcmp(d_opcode,"0010011")) {
+    printf("--- This is an SLTI instruction. \n");
+    SLTI(Rd, Rs1, Imm, Funct3);
+    return 0;
+  }	  
   return 1;	
 }
 
