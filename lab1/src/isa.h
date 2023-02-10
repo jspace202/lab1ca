@@ -56,13 +56,30 @@ int LH (char* i_);
 int LW (char* i_);
 int LBU (char* i_);
 int LHU (char* i_);
-int SLLI (char* i_);
-int SLTI (char* i_);
+int SLLI (int Rd, int Rs1, int Imm, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] << SIGNEXT(Imm,11);
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+}
+int SLTI (int Rd, int Rs1, int Imm, int Funct3){
+  int cur = 0;
+  if (CURRENT_STATE.REGS[Rs1] < CURRENT_STATE.REGS[Imm])
+  cur = 1;
+  else cur = 0;
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+  }
 int SLTIU (char* i_);
 int XORI (char* i_);
 int SRLI (char* i_);
 int SRAI (char* i_);
-int ORI (char* i_);
+int ORI (int Rd, int Rs1, int Imm, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] ^ SIGNEXT(Imm,10);
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+};
 int ANDI (char* i_);
 
 // U Instruction

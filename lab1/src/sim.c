@@ -96,7 +96,7 @@ int r_process(char* i_) {
     printf("--- This is an SRL instruction. \n");
     SRL(Rd);
     return 0;
-  }*/
+  }
   else if(!strcmp(d_opcode,"0110011")) {
     printf("--- This is an SUB instruction. \n");
     SUB(Rd, Rs1, Rs2, Funct3);
@@ -106,7 +106,7 @@ int r_process(char* i_) {
     printf("--- This is an OR instruction. \n");
     OR(Rd, Rs1, Rs2, Funct3);
     return 0;
-  }/*
+  }
   else if(!strcmp(d_opcode,"0110011")) {
     printf("--- This is an XOR instruction. \n");
     XOR(Rd, Rs1, Rs2, Funct3);
@@ -183,7 +183,11 @@ int i_process(char* i_) {
     ADDI(Rd, Rs1, Imm, Funct3);
     return 0;
   }	  
-
+  if(!strcmp(d_opcode,"0010011")) {
+    printf("--- This is an SLTI instruction. \n");
+    SLTI(Rd, Rs1, Imm, Funct3);
+    return 0;
+  }	  
   return 1;	
 }
 
