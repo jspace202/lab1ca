@@ -82,7 +82,12 @@ int SLTU (char* i_);
 int XOR (char* i_);
 int SRL (char* i_);
 int SRA (char* i_);
-int OR (char* i_);
+int OR(int Rd, int Rs1, int Rs2, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] | CURRENT_STATE.REGS[Rs2];
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+}
 int AND (char* i_);
 
 // B instructions
