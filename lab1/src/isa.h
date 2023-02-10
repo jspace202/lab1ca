@@ -75,13 +75,50 @@ int SH (char* i_);
 int SW (char* i_);
 
 // R instruction
-int SUB (char* i_);
-int SLL (char* i_);
-int SLT (char* i_);
-int SLTU (char* i_);
-int XOR (char* i_);
-int SRL (char* i_);
-int SRA (char* i_);
+int SUB(int Rd, int Rs1, int Rs2, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] - CURRENT_STATE.REGS[Rs2];
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+}
+int SLL(int Rd, int Rs1, int Rs2, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] << CURRENT_STATE.REGS[Rs2];
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+}
+int SLT(int Rd, int Rs1, int Rs2, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] < CURRENT_STATE.REGS[Rs2];
+  NEXT_STATE.REGS[Rd] = 1;
+  NEXT_STATE.REGS[Rd] = 0;
+  return 0;
+}
+int SLTU(int Rd, int Rs1, int Rs2, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] < CURRENT_STATE.REGS[Rs2];
+  NEXT_STATE.REGS[Rd] = 1;
+  NEXT_STATE.REGS[Rd] = 0;
+  return 0;
+}
+int XOR(int Rd, int Rs1, int Rs2, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] ^ CURRENT_STATE.REGS[Rs2];
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+}
+int SRL(int Rd, int Rs1, int Rs2, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] >> CURRENT_STATE.REGS[Rs2];
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+}
+int SRA(int Rd, int Rs1, int Rs2, int Funct3) {
+  int cur = 0;
+  cur = CURRENT_STATE.REGS[Rs1] >>> CURRENT_STATE.REGS[Rs2];
+  NEXT_STATE.REGS[Rd] = cur;
+  return 0;
+}
 int OR(int Rd, int Rs1, int Rs2, int Funct3) {
   int cur = 0;
   cur = CURRENT_STATE.REGS[Rs1] | CURRENT_STATE.REGS[Rs2];
