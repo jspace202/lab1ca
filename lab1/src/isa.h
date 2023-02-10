@@ -81,7 +81,7 @@ int SUB(int Rd, int Rs1, int Rs2, int Funct3) {
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 }
-int SLL(int Rd, int Rs1, int Rs2, int Funct3) {
+/*int SLL(int Rd, int Rs1, int Rs2, int Funct3) {
   int cur = 0;
   cur = CURRENT_STATE.REGS[Rs1] << CURRENT_STATE.REGS[Rs2];
   NEXT_STATE.REGS[Rd] = cur;
@@ -118,7 +118,7 @@ int SRA(int Rd, int Rs1, int Rs2, int Funct3) {
   cur = CURRENT_STATE.REGS[Rs1] >>> CURRENT_STATE.REGS[Rs2];
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
-}
+}*/
 int OR(int Rd, int Rs1, int Rs2, int Funct3) {
   int cur = 0;
   cur = CURRENT_STATE.REGS[Rs1] | CURRENT_STATE.REGS[Rs2];
