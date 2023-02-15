@@ -26,7 +26,7 @@
 int ADDI (int Rd, int Rs1, int Imm, int Funct3) { //I Type
 
   int cur = 0;
-  cur = CURRENT_STATE.REGS[Rs1] + SIGNEXT(Imm,12);
+  cur = CURRENT_STATE.REGS[Rs1] + Imm;
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 
@@ -74,7 +74,7 @@ int LHU (int Rd, int Rs1, int Imm, int Funct3) {
 int SLLI (int Rd, int Rs1, int Imm, int Funct3) {
 
   int cur = 0;
-  cur = CURRENT_STATE.REGS[Rs1] << SIGNEXT(Imm,12);
+  cur = CURRENT_STATE.REGS[Rs1] << Imm;
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 
@@ -82,7 +82,7 @@ int SLLI (int Rd, int Rs1, int Imm, int Funct3) {
 int SLTI (int Rd, int Rs1, int Imm, int Funct3) {
 
   int cur = 0;
-  cur = CURRENT_STATE.REGS[Rs1] < SIGNEXT(Imm,12) ? 1 : 0;
+  cur = (CURRENT_STATE.REGS[Rs1] < Imm) ? 1 : 0;
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 
@@ -90,7 +90,8 @@ int SLTI (int Rd, int Rs1, int Imm, int Funct3) {
 int SLTIU (int Rd, int Rs1, int Imm, int Funct3) {
 
   int cur = 0;
-  cur = CURRENT_STATE.REGS[Rs1] < SIGNEXT(Imm,12) ? 1 : 0;
+  cur = (CURRENT_STATE.REGS[Rs1] < Imm) ? 1 : 0;
+  cur = SIGNEXT(cur,Imm);
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 
@@ -98,7 +99,7 @@ int SLTIU (int Rd, int Rs1, int Imm, int Funct3) {
 int XORI (int Rd, int Rs1, int Imm, int Funct3) { //I Type
 
   int cur = 0;
-  cur = CURRENT_STATE.REGS[Rs1] ^ SIGNEXT(Imm,12);
+  cur = CURRENT_STATE.REGS[Rs1] ^ Imm;
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 
@@ -187,7 +188,7 @@ int SLL (int Rd, int Rs1, int Rs2, int Funct3) {
 int SLT (int Rd, int Rs1, int Rs2, int Funct3) {
 
   int cur = 0;
-  cur = CURRENT_STATE.REGS[Rs1] < CURRENT_STATE.REGS[Rs2] ? 1 : 0;
+  cur = (CURRENT_STATE.REGS[Rs1] < CURRENT_STATE.REGS[Rs2]) ? 1 : 0;
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 
@@ -196,6 +197,7 @@ int SLTU (int Rd, int Rs1, int Rs2, int Funct3) {
 
   int cur = 0;
   cur = CURRENT_STATE.REGS[Rs1] < CURRENT_STATE.REGS[Rs2] ? 1 : 0;
+  cur = SIGNEXT(cur,Rs1);
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 
@@ -220,6 +222,7 @@ int SRA (int Rd, int Rs1, int Rs2, int Funct3) {
 
   int cur = 0;
   cur = CURRENT_STATE.REGS[Rs1] >> CURRENT_STATE.REGS[Rs2];
+  cur = SIGNEXT(cur, 31-Rs1);
   NEXT_STATE.REGS[Rd] = cur;
   return 0;
 
