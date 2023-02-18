@@ -87,7 +87,7 @@ int r_process(char* i_) {
   int Rd = bchar_to_int(rd);
   int Funct3 = bchar_to_int(funct3);
   int Funct7 = bchar_to_int(funct7);
-  printf ("Opcode = %s\n Rs1 = %d\n Rs2 = %d\n Rd = %d\n Funct3 = %d\n\n",
+  printf ("Opcode = %s\n Rs1 = %d\n Rs2 = %d\n Rd = %d\n Funct3 = %d\n Funct7 = %d\n\n",
 	  d_opcode, Rs1, Rs2, Rd, Funct3, Funct7);
   printf("\n");
 
@@ -163,7 +163,6 @@ int i_process(char* i_) {
   char rs1[6]; rs1[5] = '\0';		   
   char rd[6]; rd[5] = '\0';
   char funct3[4]; funct3[3] = '\0';
-  char funct7[7]; funct7[6] = '\0';
   char imm[13]; imm[12] = '\0';
   for(int i = 0; i < 5; i++) {
     rs1[i] = i_[31-19+i];
@@ -175,14 +174,10 @@ int i_process(char* i_) {
   for(int i = 0; i < 3; i++) {
     funct3[i] = i_[31-14+i];
   }
-  for (int i = 0; i < 7; i++) {
-    funct7[i]= i_[i];
-  }
   
   int Rs1 = bchar_to_int(rs1);
   int Rd = bchar_to_int(rd);
   int Funct3 = bchar_to_int(funct3);
-  int Funct7 = bchar_to_int(funct7);
   int Imm = bchar_to_int(imm);
   printf ("Opcode = %s\n Rs1 = %d\n Imm = %d\n Rd = %d\n Funct3 = %d\n\n",
 	  d_opcode, Rs1, Imm, Rd, Funct3);
@@ -260,7 +255,12 @@ int i_process(char* i_) {
     printf("--- This is an LHU instruction. \n");
     LHU(Rd, Rs1, Imm, Funct3);
     return 0;
-  }	     
+  }	       
+  if(!strcmp(d_opcode,"1100111")) {
+    printf("--- This is an JALR instruction. \n");
+    JALR(Rd, Rs1, Imm, Funct3);
+    return 0;
+  }
 
   return 1;	
 }
@@ -287,18 +287,18 @@ int b_process(char* i_) {
     rs2[i] = i_[31-24+i];                
   }
   // Old-fashioned method but works :)
-  imm[0] = i_[31-31]; 
-  imm[1] = i_[31-7]; 
-  imm[2] = i_[31-30]; 
+  imm[0] = i_[31-31]; //imm12
+  imm[1] = i_[31-7];  //imm11
+  imm[2] = i_[31-30]; //imm10
   imm[3] = i_[31-29];
   imm[4] = i_[31-28]; 
   imm[5] = i_[31-27]; 
   imm[6] = i_[31-26];
-  imm[7] = i_[31-25];
-  imm[8] = i_[31-11];
+  imm[7] = i_[31-25]; //imm5
+  imm[8] = i_[31-11]; //imm4
   imm[9] = i_[31-10];
   imm[10] = i_[31-9];
-  imm[11] = i_[31-8];
+  imm[11] = i_[31-8]; //imm1
   imm[12] = '\0';  
 
   for(int i = 0; i < 3; i++) {
@@ -364,36 +364,41 @@ int s_process(char* i_) {
   d_opcode[6] = i_[31-0]; 
   d_opcode[7] = '\0';
   char rs1[6]; rs1[5] = '\0';
-  char rs2[6]; rs2[5] = '\0';		    
-  char rd[6]; rd[5] = '\0'; 
+  char rs2[6]; rs2[5] = '\0';		     
   char funct3[4]; funct3[3] = '\0';
-  char imm[7]; imm[6] = '\0'; 
-
+  char imm[13]; 
   for(int i = 0; i < 5; i++) {
     rs1[i] = i_[31-19+i];
-    rs2[i] = i_[31-24+i];    
-    rd[i] = i_[31-11+i];            
+    rs2[i] = i_[31-24+i];                
   }
+  // Old-fashioned method but works :)
+  imm[0] = i_[31-31]; //imm11
+  imm[1] = i_[31-30];  //imm10
+  imm[2] = i_[31-29]; //imm9
+  imm[3] = i_[31-28];
+  imm[4] = i_[31-27]; 
+  imm[5] = i_[31-26]; 
+  imm[6] = i_[31-25]; //imm5
+  imm[7] = i_[31-11]; //imm4
+  imm[8] = i_[31-10]; //imm3
+  imm[9] = i_[31-9];
+  imm[10] = i_[31-8];
+  imm[11] = i_[31-7]; //imm0
+  imm[12] = '\0';  
 
   for(int i = 0; i < 3; i++) {
     funct3[i] = i_[31-14+i];
   }
-
-  for(int i = 0; i < 7; i++){
-    imm[i] = i_[i];
-  }
-
   int Rs1 = bchar_to_int(rs1);
   int Rs2 = bchar_to_int(rs2);  
-  int Rd = bchar_to_int(rd);
   int Funct3 = bchar_to_int(funct3);
   int Imm = bchar_to_int(imm);
-  printf ("Opcode = %s\n Rs1 = %d\n Rs2 = %d\n Rd = %d\n Imm = %d\n Funct3 = %d\n\n",
-	  d_opcode, Rs1, Rs2, Rd, Imm, Funct3);
-  printf("\n");    
+  printf ("Opcode = %s\n Rs1 = %d\n Rs2 = %d\n Imm = %d\n Funct3 = %d\n\n",
+	  d_opcode, Rs1, Rs2, Imm, Funct3);
+  printf("\n");
 
   /* Add store instructions here */ 
-  /*if(!strcmp(d_opcode,"0100011")) {
+  if(!strcmp(d_opcode,"0100011")) {
     printf("--- This is an SB instruction. \n");
     SB(Rs1, Rs2, Imm, Funct3);
     return 0;
@@ -407,7 +412,7 @@ int s_process(char* i_) {
     printf("--- This is an SW instruction. \n");
     SW(Rs1, Rs2, Imm, Funct3);
     return 0;
-  }	 */    
+  }	     
 
   return 1;
 
@@ -417,17 +422,55 @@ int j_process(char* i_) {
 
   /* This function execute Jump instructions */
 
+char d_opcode[8];
+  d_opcode[0] = i_[31-6]; 
+  d_opcode[1] = i_[31-5]; 
+  d_opcode[2] = i_[31-4]; 
+  d_opcode[3] = i_[31-3];
+  d_opcode[4] = i_[31-2]; 
+  d_opcode[5] = i_[31-1]; 
+  d_opcode[6] = i_[31-0]; 
+  d_opcode[7] = '\0';
+  char rd[6]; rd[5] = '\0';     
+  char imm[21]; 
+  for(int i = 0; i < 5; i++) {
+    rd[i] = i_[31-11+i];               
+  }
+  // Old-fashioned method but works :)
+  imm[0] = i_[31-31]; //imm20
+  imm[1] = i_[31-30];  //imm10
+  imm[2] = i_[31-29]; //imm9
+  imm[3] = i_[31-28];
+  imm[4] = i_[31-27]; 
+  imm[5] = i_[31-26]; 
+  imm[6] = i_[31-25];
+  imm[7] = i_[31-24]; //imm4
+  imm[8] = i_[31-23]; //imm3
+  imm[9] = i_[31-22];
+  imm[10] = i_[31-21]; //imm1
+  imm[11] = i_[31-20]; //imm11
+  imm[12] = i_[31-19]; //imm19
+  imm[13] = i_[31-18];  //imm18
+  imm[14] = i_[31-17]; //imm17
+  imm[15] = i_[31-16];
+  imm[16] = i_[31-15]; 
+  imm[17] = i_[31-14]; 
+  imm[18] = i_[31-13];
+  imm[19] = i_[31-12]; //imm12
+  imm[20] = '\0';  
+
+  int Rd = bchar_to_int(rd);
+  int Imm = bchar_to_int(imm);
+  printf ("Opcode = %s\n Rd = %d\n Imm = %d\n\n",
+	  d_opcode, Rd, Imm);
+  printf("\n");
+
   /* Add jump instructions here */ 
-  /*if(!strcmp(d_opcode,"1100011")) {
+  if(!strcmp(d_opcode,"1101111")) {
     printf("--- This is an JAL instruction. \n");
-    JAL(Rd, Rs1, Imm, Funct3);
+    JAL(Rd, Imm);
     return 0;
   }	
-  if(!strcmp(d_opcode,"1100011")) {
-    printf("--- This is an JALR instruction. \n");
-    JALR(Rd, Rs1, Imm, Funct3);
-    return 0;
-  }*/
 
   return 1;
 
@@ -437,17 +480,60 @@ int u_process(char* i_) {
 
   /* This function execute U type instructions */
 
+char d_opcode[8];
+  d_opcode[0] = i_[31-6]; 
+  d_opcode[1] = i_[31-5]; 
+  d_opcode[2] = i_[31-4]; 
+  d_opcode[3] = i_[31-3];
+  d_opcode[4] = i_[31-2]; 
+  d_opcode[5] = i_[31-1]; 
+  d_opcode[6] = i_[31-0]; 
+  d_opcode[7] = '\0';
+  char rd[6]; rd[5] = '\0';     
+  char imm[21]; 
+  for(int i = 0; i < 5; i++) {
+    rd[i] = i_[31-11+i];               
+  }
+  // Old-fashioned method but works :)
+  imm[0] = i_[31-31]; //imm31
+  imm[1] = i_[31-30];  //imm30
+  imm[2] = i_[31-29]; //imm29
+  imm[3] = i_[31-28];
+  imm[4] = i_[31-27]; 
+  imm[5] = i_[31-26]; 
+  imm[6] = i_[31-25];
+  imm[7] = i_[31-24]; //imm24
+  imm[8] = i_[31-23]; //imm23
+  imm[9] = i_[31-22];
+  imm[10] = i_[31-21];
+  imm[11] = i_[31-20]; //imm20
+  imm[12] = i_[31-19]; //imm19
+  imm[13] = i_[31-18];  //imm18
+  imm[14] = i_[31-17]; //imm17
+  imm[15] = i_[31-16];
+  imm[16] = i_[31-15]; 
+  imm[17] = i_[31-14]; 
+  imm[18] = i_[31-13];
+  imm[19] = i_[31-12]; //imm12
+  imm[20] = '\0';  
+
+  int Rd = bchar_to_int(rd);
+  int Imm = bchar_to_int(imm);
+  printf ("Opcode = %s\n Rd = %d\n Imm = %d\n\n",
+	  d_opcode, Rd, Imm);
+  printf("\n");
+
   /* Add U instructions here */ 
-  /*if(!strcmp(d_opcode,"0110111")) {
+  if(!strcmp(d_opcode,"0110111")) {
     printf("--- This is an LUI instruction. \n");
-    LUI(Rd, Imm, Funct3);
+    LUI(Rd, Imm);
     return 0;
   }	
   if(!strcmp(d_opcode,"0010011")) {
     printf("--- This is an AUIPC instruction. \n");
-    AUIPC(Rd, Imm, Funct3);
+    AUIPC(Rd, Imm);
     return 0;
-  }	*/
+  }
 
   return 1;
 
