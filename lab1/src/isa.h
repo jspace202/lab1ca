@@ -21,6 +21,7 @@
 //   if yes, sign extend (e.g., 0x80_0000 -> 0xFF80_0000)
 //
 #define SIGNEXT(v, sb) ((v) | (((v) & (1 << (sb))) ? ~((1 << (sb))-1) : 0))
+#define ZEROEXT(v, sb) (~0U >> (32-sb)) & v
 
 // R instruction
 int ADD (int Rd, int Rs1, int Rs2, int Funct3) { //R Type
@@ -236,7 +237,7 @@ int LUI (int Rd, int Imm) {
 
 // S Instruction
 int SB (int Rs1, int Rs2, int Imm, int Funct3){
-
+  
   return 0;
 }
 int SH (int Rs1, int Rs2, int Imm, int Funct3){
@@ -250,22 +251,19 @@ int SW (int Rs1, int Rs2, int Imm, int Funct3){
 
 // B instructions
 int BNE (int Rs1, int Rs2, int Imm, int Funct3) { //B Type
-
   int cur = 0;
   Imm = Imm << 1;
   if (CURRENT_STATE.REGS[Rs1] != CURRENT_STATE.REGS[Rs2])
     NEXT_STATE.PC = (CURRENT_STATE.PC + 4) + (SIGNEXT(Imm,13));
   return 0;
-
 }
-int BEQ (int Rs1, int Rs2, int Imm, int Funct3) {
 
+int BEQ (int Rs1, int Rs2, int Imm, int Funct3) {
   int cur = 0;
   Imm = Imm << 1;
   if (CURRENT_STATE.REGS[Rs1] == CURRENT_STATE.REGS[Rs2])
     NEXT_STATE.PC = (CURRENT_STATE.PC + 4) + (SIGNEXT(Imm,13));
   return 0;
-
 }
 int BLT (int Rs1, int Rs2, int Imm, int Funct3) { //B Type
 
@@ -281,7 +279,7 @@ int BGE (int Rs1, int Rs2, int Imm, int Funct3) { //B Type
   int cur = 0;
   Imm = Imm << 1;
   if (CURRENT_STATE.REGS[Rs1] >= CURRENT_STATE.REGS[Rs2])
-    NEXT_STATE.PC = (CURRENT_STATE.PC + 4) + (SIGNEXT(Imm,13));
+    NEXT_STATE.PC = SIGNEXT(Imm,13);
   return 0;
 
 }
